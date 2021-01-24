@@ -4,7 +4,8 @@
 #include <sourcemod>
 #include <sdktools>
 
-#define MODEL_VIP "models/player/custom_player/monsterko/inori_yuzuriha/inori.mdl"
+#define MODEL_VIP "models/player/custom_player/maoling/black_rock_shooter/brs/brs.mdl"
+#define MODEL_OWNER "models/player/custom_player/xlegend/yoshino/yoshino.mdl"
 
 public Plugin myinfo = 
 {
@@ -32,6 +33,14 @@ public Action eventspawn(Handle event, const char[] name, bool dontBroadcast)
 		PrecacheModel(MODEL_VIP ,true);
 		SetEntityModel(client, MODEL_VIP);
 	}
+	if(GetUserFlagBits(client) & ADMFLAG_ROOT)
+	{
+		SetEntityHealth(client, 150);
+		SetEntProp(client, Prop_Data, "m_ArmorValue", 150, 1 );
+		AddFileToDownloadsTable(MODEL_OWNER);
+		PrecacheModel(MODEL_OWNER ,true);
+		SetEntityModel(client, MODEL_OWNER);
+	}
 }
 
 public Action timerhud(Handle hudtimer)
@@ -44,6 +53,11 @@ public Action timerhud(Handle hudtimer)
 			{
 				SetHudTextParams(-1.0, 0.1, 5.0, 196, 0, 0, 255, 0, 0.1, 0.1, 0.1);
 				ShowHudText(i, 5, "ARENA.NEVERGO.RO\nVIP: Ai vip");
+			}
+			else if(GetUserFlagBits(i) & ADMFLAG_ROOT == ADMFLAG_ROOT)
+			{
+				SetHudTextParams(-1.0, 0.1, 5.0, 196, 0, 0, 255, 0, 0.1, 0.1, 0.1);
+				ShowHudText(i, 5, "ARENA.NEVERGO.RO\nRANK: Owner");
 			}
 			else
 			{
